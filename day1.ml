@@ -9,7 +9,7 @@ let process_line line =
   | _ -> failwith "not 2 elements"
 
 let part2 () =
-  let lines = Utils.read_file "input/day1.txt" in
+  let lines = Utils.read_lines "input/day1.txt" in
   let a, b = List.map ~f:process_line lines |> List.unzip in
 
   let map =
@@ -21,7 +21,7 @@ let part2 () =
   |> List.reduce_exn ~f:( + ) |> string_of_int |> print_endline
 
 let part1 () =
-  let lines = Utils.read_file "input/day1.txt" in
+  let lines = Utils.read_lines "input/day1.txt" in
   let a, b = List.map ~f:process_line lines |> List.unzip in
 
   List.fold2_exn (List.sort a ~compare:Int.compare)
