@@ -6,17 +6,16 @@ let digit_regex =
       seq [ str "mul("; group (rep digit); str ","; group (rep digit); str ")" ])
 
 let do_regex = Re.compile Re.(str "do()")
-let don't_regex = Re.compile Re.(str "don't()")
+and don't_regex = Re.compile Re.(str "don't()")
 
 let part2 line =
-  let do_matches = Re.all do_regex line in
-  let don't_matches = Re.all don't_regex line in
+  let do_matches = Re.all do_regex line
+  and don't_matches = Re.all don't_regex line in
 
   let don't_ranges =
     don't_matches
     |> List.map ~f:(fun m -> Tuple.T2.get2 (Re.Group.offset m 0) + 1)
-  in
-  let do_ranges =
+  and do_ranges =
     do_matches |> List.map ~f:(fun m -> Tuple.T2.get2 (Re.Group.offset m 0) + 1)
   in
 
@@ -36,7 +35,7 @@ let part2 line =
       | [| _; (a, b); (c, d) |] ->
           acc + if valid_idx a then match_to_int a b * match_to_int c d else 0
       | _ -> failwith "not 2 captures")
-  |> string_of_int |> print_endline
+  |> Utils.print_int
 
 let part1 line =
   let matches = Re.all digit_regex line in
@@ -44,11 +43,8 @@ let part1 line =
   List.fold matches ~init:0 ~f:(fun acc group ->
       match Re.Group.all group with
       | [| _; x; y |] -> acc + (int_of_string x * int_of_string y)
-      | _ ->
-          failwith
-            ("not 2 captures"
-            ^ string_of_int (Array.length (Re.Group.all group))))
-  |> string_of_int |> print_endline
+      | _ -> failwith "not 2 captures")
+  |> Utils.print_int
 
 let () =
   let line = Utils.read_string "input/day3.txt" in
