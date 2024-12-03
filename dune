@@ -7,3 +7,8 @@
  (name day2)
  (modules utils day2)
  (libraries core ))
+
+(executable
+ (name day3)
+ (modules utils day3)
+ (libraries core re))
