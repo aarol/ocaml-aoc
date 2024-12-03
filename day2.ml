@@ -27,7 +27,7 @@ let part1 lines =
   |> List.length |> string_of_int |> print_endline
 
 let () =
-  let lines = Utils.read_file "input/day2.txt" |> List.map ~f:process_line in
+  let lines = Utils.read_lines "input/day2.txt" |> List.map ~f:process_line in
 
   part1 lines;
   part2 lines
