@@ -1,12 +1,12 @@
 (executable
  (name day1)
  (modules utils day1)
- (libraries core ))
+ (libraries core))
 
 (executable
  (name day2)
  (modules utils day2)
- (libraries core ))
+ (libraries core))
 
 (executable
  (name day3)
@@ -16,4 +16,9 @@
 (executable
  (name day4)
  (modules utils day4)
+ (libraries core re))
+
+(executable
+ (name day5)
+ (modules utils day5)
  (libraries core re))

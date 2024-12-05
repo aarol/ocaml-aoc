@@ -2,8 +2,8 @@ open Core
 
 let rec horizontal = function
   | 'X' :: 'M' :: 'A' :: 'S' :: rest -> 1 + horizontal rest
-  | _ :: rest when List.length rest > 0 -> horizontal rest
-  | _ -> 0
+  | [] -> 0
+  | _ :: rest -> horizontal rest
 
 let horizontal_all lst = horizontal lst + horizontal (List.rev lst)
 
