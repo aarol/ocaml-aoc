@@ -2,10 +2,8 @@ open Core
 open Utils
 
 let parse_ab conditions =
-  List.map conditions ~f:(fun c -> String.lsplit2_exn c ~on:'|')
-  |> List.map ~f:(fun (a, b) -> (int_of_string a, int_of_string b))
+  List.map conditions ~f:(fun c -> Scanf.sscanf c "%d|%d" Tuple2.create)
   |> List.unzip
-
 let part1 conditions pages =
   let a, b = parse_ab conditions in
 

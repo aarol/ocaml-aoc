@@ -22,3 +22,8 @@
  (name day5)
  (modules utils day5)
  (libraries core re))
+
+(executable
+ (name day6)
+ (modules utils day6)
+ (libraries core re core_unix))
