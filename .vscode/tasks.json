@@ -1,0 +1,18 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build file bytecode",
+      "command": "dune",
+      "args": [
+        "build",
+        "./${fileBasenameNoExtension}.bc"
+      ],
+      "type": "process",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "group": "build"
+    }
+  ]
+}
