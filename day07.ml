@@ -1,7 +1,7 @@
 open Core
 open Utils
 
-let reduce input solve_fn =
+let solve input valid_fn =
   List.map input ~f:(fun line ->
       match String.split line ~on:':' with
       | [ x; y ] ->
@@ -9,31 +9,30 @@ let reduce input solve_fn =
           let numbers =
             Utils.string_split_whitespace y |> List.map ~f:int_of_string
           in
-          if solve_fn 0 target numbers then target else 0
+          if valid_fn 0 target numbers then target else 0
       | _ -> failwith "not 2 elements")
   |> sum |> print_int
 
 let part1 lines =
-  let rec solve curr target = function
+  let rec is_valid curr target = function
     | [] -> curr = target
-    | x :: xs -> solve (curr + x) target xs || solve (curr * x) target xs
+    | x :: xs -> is_valid (curr + x) target xs || is_valid (curr * x) target xs
   in
 
-  reduce lines solve
+  solve lines is_valid
 
 let part2 lines =
   let concat x y = int_of_string (string_of_int x ^ string_of_int y) in
 
-  let rec solve curr target lst =
-    match lst with
+  let rec is_valid_concat curr target = function
     | [] -> curr = target
     | x :: xs ->
-        solve (curr + x) target xs
-        || solve (curr * x) target xs
-        || solve (concat curr x) target xs
+        is_valid_concat (curr + x) target xs
+        || is_valid_concat (curr * x) target xs
+        || is_valid_concat (concat curr x) target xs
   in
 
-  reduce lines solve
+  solve lines is_valid_concat
 
 let () =
   let lines = Utils.read_lines "input/day7.txt" in
