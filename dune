@@ -1,35 +1,40 @@
 (executable
- (name day1)
- (modules utils day1)
+ (name day01)
+ (modes byte exe)
+ (modules utils day01)
  (libraries core))
 
 (executable
- (name day2)
- (modules utils day2)
+ (name day02)
+ (modes byte exe)
+ (modules utils day02)
  (libraries core))
 
 (executable
- (name day3)
- (modules utils day3)
+ (name day03)
+ (modes byte exe)
+ (modules utils day03)
  (libraries core re))
 
 (executable
- (name day4)
- (modules utils day4)
+ (name day04)
+ (modules utils day04)
  (libraries core re))
 
 (executable
- (name day5)
- (modules utils day5)
+ (name day05)
+ (modes byte exe)
+ (modules utils day05)
  (libraries core re))
 
 (executable
- (name day6)
- (modules utils day6)
+ (name day06)
+ (modes byte exe)
+ (modules utils day06)
  (libraries core re core_unix))
 
 (executable
- (name day7)
- (modules utils day7)
+ (name day07)
  (modes byte exe)
+ (modules utils day07)
  (libraries core re))
