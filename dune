@@ -27,3 +27,9 @@
  (name day6)
  (modules utils day6)
  (libraries core re core_unix))
+
+(executable
+ (name day7)
+ (modules utils day7)
+ (modes byte exe)
+ (libraries core re))

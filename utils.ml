@@ -25,4 +25,7 @@ let rec find_index v = function
   | [] -> failwith "not found"
   | x :: xs -> if x = v then 0 else 1 + find_index v xs
 
-let sum = List.reduce_exn ~f:(+)
+let sum = List.reduce_exn ~f:( + )
+
+let string_split_whitespace str =
+  String.split str ~on:' ' |> List.filter ~f:(Fn.non String.is_empty)
