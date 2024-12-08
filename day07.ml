@@ -7,7 +7,7 @@ let solve input valid_fn =
       | [ x; y ] ->
           let target = int_of_string x in
           let numbers =
-            Utils.string_split_whitespace y |> List.map ~f:int_of_string
+            Utils.string_split_whitespace y |> Utils.ints_of_strings
           in
           if valid_fn 0 target numbers then target else 0
       | _ -> failwith "not 2 elements")

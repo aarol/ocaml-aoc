@@ -26,6 +26,9 @@ let rec find_index v = function
   | x :: xs -> if x = v then 0 else 1 + find_index v xs
 
 let sum = List.reduce_exn ~f:( + )
+let sum_array = Array.reduce_exn ~f:( + )
 
 let string_split_whitespace str =
   String.split str ~on:' ' |> List.filter ~f:(Fn.non String.is_empty)
+
+let ints_of_strings = List.map ~f:int_of_string
