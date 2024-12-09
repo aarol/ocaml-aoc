@@ -38,8 +38,15 @@
  (modes byte exe)
  (modules utils day07)
  (libraries core re))
+
 (executable
  (name day08)
  (modes byte exe)
  (modules utils day08)
+ (libraries core re))
+
+(executable
+ (name day09)
+ (modes byte exe)
+ (modules utils day09)
  (libraries core re))
