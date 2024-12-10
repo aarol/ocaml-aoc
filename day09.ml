@@ -2,19 +2,30 @@ open Core
 
 let digit_from_char c = int_of_char c - 48
 
-(* type block_value = Free | Sized of int
-   type block = { len : int; value : block_value } *)
-(*
-   let to_block_list line =
-     Array.mapi line ~f:(fun i c ->
-         if i % 2 = 0 then { len = digit_from_char c; value = Sized (i / 2) }
-         else { len = digit_from_char c; value = Free }) *)
+type block = { len : int; value : int }
+type free = { len : int }
 
 let to_str_list line =
   Array.concat_mapi line ~f:(fun i c ->
       if i % 2 = 0 then
         Array.init (digit_from_char c) ~f:(fun _ -> string_of_int (i / 2))
       else Array.init (digit_from_char c) ~f:(fun _ -> "."))
+
+let spaces line =
+  let acc = ref 0 in
+  Array.filter_mapi line ~f:(fun i c ->
+      let len = digit_from_char c in
+      let curr_acc = !acc in
+      acc := !acc + len;
+      if i % 2 = 1 then Some (curr_acc, { len }) else None)
+
+let blocks line =
+  let acc = ref 0 in
+  Array.filter_mapi line ~f:(fun i c ->
+      let len = digit_from_char c in
+      let cacc = !acc in
+      acc := !acc + len;
+      if i % 2 = 0 then Some (cacc, { value = i / 2; len }) else None)
 
 let part1 line =
   let arr = to_str_list line in
@@ -36,45 +47,34 @@ let part1 line =
 
   ()
 
-(* let part2 line =
-  let arr = to_str_list line in
+let part2 line =
+  let blocks = Array.rev (blocks line) in
+  let spaces = spaces line in
 
-  let rec checksum_of_range a b =
-    if a = b then 0
-    else (int_of_string arr.(a) * a) + checksum_of_range (a + 1) b
+  let rec sum_of_block value size i =
+    if size <= 0 then 0 else (value * i) + sum_of_block value (size - 1) (i + 1)
   in
 
-  let rec first_index_of_file start =
-    if start < 1 || (not @@ String.equal arr.(start - 1) ".") then start
-    else first_index_of_file (start - 1)
-  in
-  
-  let find_free length = 
-    for i = 0 to Array.length arr - length do
-      if String.equal arr.(i) "." 
-      
-      done
+  Array.fold blocks ~init:0 ~f:(fun acc (b_i, b) ->
+      let found =
+        spaces
+        |> Array.findi ~f:(fun _ (f_i, f) -> f_i <= b_i && f.len >= b.len)
       in
+      acc
+      +
+      match found with
+      | Some (i, (f_i, f)) ->
+          spaces.(i) <- (f_i + b.len, { len = f.len - b.len });
+          let sum = sum_of_block b.value b.len f_i in
+          printf "%d\n" sum;
+          sum
+      | None -> sum_of_block b.value b.len b_i)
+  |> Utils.print_int;
 
-  let rec aux right_i arr =
-    if right_i = 0 then 0
-    else
-      let x = arr.(right_i) in
-
-      if not @@ String.equal x "." then
-        let left_i = first_index_of_file right_i in
-        let length = right_i - left_i in
-
-        
-      else aux (right_i - 1) arr
-  in
-
-  aux (Array.length arr - 1) arr |> Utils.print_int;
-
-  () *)
+  ()
 
 let () =
   let lines = Utils.read_string "input/day09.txt" |> String.to_array in
 
   part1 lines;
-  (* part2 lines *)
+  part2 lines
