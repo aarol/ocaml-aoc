@@ -32,3 +32,7 @@ let string_split_whitespace str =
   String.split str ~on:' ' |> List.filter ~f:(Fn.non String.is_empty)
 
 let ints_of_strings = List.map ~f:int_of_string
+
+let digit_of_char char = Char.to_int char - 48
+
+let map_tuple f (a, b) = (f a, f b)

@@ -51,6 +51,8 @@ let part2 line =
   let blocks = Array.rev (blocks line) in
   let spaces = spaces line in
 
+  
+
   let rec sum_of_block value size i =
     if size <= 0 then 0 else (value * i) + sum_of_block value (size - 1) (i + 1)
   in
