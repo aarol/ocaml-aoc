@@ -55,58 +55,32 @@ let same_region (x, y) plots =
   if Utils.out_of_bounds grid (x, y) then false
   else List.mem plots (x, y) ~equal:Poly.equal
 
-(* let diagonals (x, y) =
-   [ (x + 1, y + 1); (x - 1, y + 1); (x + 1, y - 1); (x - 1, y - 1) ] *)
-(*
-   let other_region (x, y) plots =
-     if Utils.out_of_bounds grid (x, y) then None
-     else Some (not @@ List.mem plots (x, y) ~equal:Poly.equal) *)
-
-(* type dir = Right | Down | Left | Up *)
-
-(* let neighbour_dirs = [ Right; Down; Left; Up ] *)
-
-(* let ( =^ ) (ax, ay) (bx, by) = ax = bx && ay = by *)
-let ( -^ ) (ax, ay) (bx, by) = (bx - ax, by - ay)
-let ( +^ ) (ax, ay) (bx, by) = (bx + ax, by + ay)
+let ( -^ ) (ax, ay) (bx, by) = (ax - bx, ay - by)
+let ( +^ ) (ax, ay) (bx, by) = (ax + bx, ay + by)
 
 let sliding_window lst =
   let tail = List.tl_exn lst @ [ List.hd_exn lst ] in
   List.map2_exn lst tail ~f:(fun x y -> (x, y))
 
 let region_sides plots =
-  (* let sides_visited =
-       Array.(init (length grid) ~f:(fun _ -> create ~len:(length grid.(0)) 0))
-     in
-     let mark_visit (x, y) = sides_visited.(y).(x) <- 1 in
-
-     let is_visited (x, y) =
-       if Utils.out_of_bounds grid (x, y) then false else sides_visited.(y).(x) = 1
-     in *)
-  (* let opposing (ax, ay) (bx, by) = abs (ax - bx) = 2 || abs (ay - by) = 2 in *)
-  let res =
-    List.fold ~init:0 plots ~f:(fun acc pos ->
-        let corners =
-          Utils.neighbours pos |> sliding_window
-          |> List.fold ~init:0 ~f:(fun acc (npos, next) ->
-                 let nx, ny = npos in
-                 let nnx, nny = next in
-                 Printf.printf "%d, %d -> %d, %d\n" nx ny nnx nny;
-                 acc
-                 +
-                 if same_region npos plots then 0
-                 else if not (same_region next plots) then 1
-                 else
-                   let dirvec = npos -^ pos in
-                   let corner = pos +^ dirvec +^ Tuple2.swap dirvec in
-                   if not (same_region corner plots) then 1 else 0)
-        in
-        let x, y = pos in
-        Printf.printf "(%d, %d): %d\n" (x + 1) (y + 1) corners;
-        acc + corners)
-  in
-  Printf.printf "size %d corners: %d\n" (List.length plots) res;
-  res
+  List.fold ~init:0 plots ~f:(fun acc pos ->
+      let corners =
+        Utils.neighbours pos |> sliding_window
+        |> List.count ~f:(fun (npos, next) ->
+               if same_region npos plots then
+                 (* neighbor is same *)
+                 if same_region next plots then
+                   (* next clockwise is same *)
+                   let n_dv = npos -^ pos in
+                   let next_dv = next -^ pos in
+                   let diagonal = pos +^ n_dv +^ next_dv in
+                   not (same_region diagonal plots)
+                 else (* next clockwise is not same *)
+                   false
+               else (* neighbor is not same *)
+                 not (same_region next plots))
+      in
+      acc + corners)
 
 let part2 =
   Array.fold ~init:0 all_regions ~f:(fun acc plots ->
