@@ -32,7 +32,10 @@ let string_split_whitespace str =
   String.split str ~on:' ' |> List.filter ~f:(Fn.non String.is_empty)
 
 let ints_of_strings = List.map ~f:int_of_string
-
 let digit_of_char char = Char.to_int char - 48
 
-let map_tuple f (a, b) = (f a, f b)
+let in_bounds grid (x, y) =
+  y >= 0 && y < Array.length grid && x >= 0 && x < Array.length grid.(0)
+
+let out_of_bounds grid (x, y) = not @@ in_bounds grid (x, y)
+let neighbours (x, y) = [ (x + 1, y); (x, y + 1); (x - 1, y); (x, y - 1) ]

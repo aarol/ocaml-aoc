@@ -8,7 +8,7 @@ let split_digits num =
   let str = string_of_int num |> String.to_list in
   (* printf "%s\n" (String.of_list str); *)
   List.split_n str (List.length str / 2)
-  |> Utils.map_tuple (fun s -> int_of_string @@ String.of_list s)
+  |> Tuple2.map ~f:(fun s -> int_of_string @@ String.of_list s)
 
 let solve iterations =
   let map = ref @@ Hashtbl.create (module Int) in

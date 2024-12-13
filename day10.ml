@@ -45,9 +45,12 @@ let trails_from (x, y) =
   aux '0' (x, y)
 
 let part1 () =
-  collect (fun (x, y) ->
-      trails_from (x, y) |> List.stable_dedup ~compare:Poly.compare)
-  |> List.length |> Utils.print_int
+  let arr =
+    collect (fun (x, y) ->
+        trails_from (x, y) |> List.stable_dedup ~compare:Poly.compare)
+  in
+
+  arr |> List.length |> Utils.print_int
 
 let part2 () = collect trails_from |> List.length |> Utils.print_int
 
