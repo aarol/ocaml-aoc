@@ -74,3 +74,8 @@
  (modes byte exe)
  (modules utils day13)
  (libraries core re))
+(executable
+ (name day14)
+ (modes byte exe)
+ (modules utils day14)
+ (libraries core re))
