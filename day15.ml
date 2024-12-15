@@ -11,7 +11,7 @@ let ins =
   |> String.substr_replace_all ~pattern:"\n" ~with_:""
   |> String.to_list
 
-let ( @ ) mat (x, y) = mat.(y).(x)
+let ( @ ) grid (x, y) = grid.(y).(x)
 let ( +^ ) (ax, ay) (bx, by) = (ax + bx, ay + by)
 let ( =^ ) (ax, ay) (bx, by) = ax = bx && ay = by
 let ( =& ) a b = equal_char a b
@@ -26,12 +26,12 @@ let part1 () =
     in
 
     let new_pos = prev +^ dir in
-    if equal_char (grid @ new_pos) '.' then (
+    if grid @ new_pos =& '.' then (
       swap prev new_pos;
-      if prev =^ !pos then pos := new_pos else ())
-    else if equal_char (grid @ new_pos) 'O' then (
+      if prev =^ !pos then pos := new_pos)
+    else if grid @ new_pos =& 'O' then (
       move_dir new_pos dir;
-      if equal_char (grid @ new_pos) '.' then move_dir prev dir else ())
+      if grid @ new_pos =& '.' then move_dir prev dir else ())
   in
 
   List.iter ins ~f:(fun dir ->
@@ -52,9 +52,8 @@ let part1 () =
 
 let grid =
   grid_text |> String.split_lines |> Array.of_list
-  |> Array.map ~f:String.to_array
   |> Array.map ~f:(fun line ->
-         String.of_array line
+         line
          |> String.substr_replace_all ~pattern:"#" ~with_:"##"
          |> String.substr_replace_all ~pattern:"." ~with_:".."
          |> String.substr_replace_all ~pattern:"O" ~with_:"[]"
@@ -62,8 +61,6 @@ let grid =
          |> String.to_array)
 
 let part2 () =
-  let pos = ref @@ Utils.find_in_grid grid '@' in
-
   let rec can_move prev dir =
     let next = prev +^ dir in
     match grid @ next with
@@ -111,6 +108,8 @@ let part2 () =
           | _ -> ())
     | _ -> failwith "invalid dir"
   in
+
+  let pos = ref @@ Utils.find_in_grid grid '@' in
 
   let rec move_dir prev dir =
     let swap (ax, ay) (bx, by) =
