@@ -39,3 +39,21 @@ let in_bounds grid (x, y) =
 
 let out_of_bounds grid (x, y) = not @@ in_bounds grid (x, y)
 let neighbours (x, y) = [ (x + 1, y); (x, y + 1); (x - 1, y); (x, y - 1) ]
+
+let find_in_grid grid char =
+  let y = ref 0 in
+  let x = ref 0 in
+  Array.iteri grid ~f:(fun yy line ->
+      match Array.findi line ~f:(fun _ c -> Char.equal char c) with
+      | Some (xx, _) ->
+          x := xx;
+          y := yy
+      | None -> ());
+  (!x, !y)
+
+let print_grid grid =
+  Array.iter grid ~f:(fun row ->
+      Array.iter row ~f:(fun v -> printf "%c" v);
+
+      printf "\n");
+  Out_channel.flush Out_channel.stdout
