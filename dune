@@ -86,3 +86,22 @@
  (modes byte exe)
  (modules utils day15)
  (libraries core re))
+
+(executable
+ (name day16)
+ (modes byte exe)
+ (modules utils day16)
+ (libraries core re core_kernel.pairing_heap))
+
+(executable
+ (name day17)
+ (modes byte exe)
+ (modules utils day17)
+ (libraries core re))
+
+(executable
+ (name day18)
+ (modes byte exe)
+ (modules utils day18)
+ (preprocess (pps ppx_jane))
+ (libraries core re core_kernel.pairing_heap))

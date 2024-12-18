@@ -57,3 +57,22 @@ let print_grid grid =
 
       printf "\n");
   Out_channel.flush Out_channel.stdout
+
+let wait_for_input () =
+  let _ = In_channel.input_line In_channel.stdin in
+  ()
+
+module TupleKey = struct
+  module T = struct
+    type t = int * int
+    let compare x y = Tuple2.compare ~cmp1:Int.compare ~cmp2:Int.compare x y
+    let sexp_of_t = Tuple2.sexp_of_t Int.sexp_of_t Int.sexp_of_t
+    let t_of_sexp = Tuple2.t_of_sexp Int.t_of_sexp Int.t_of_sexp
+    let hash = Hashtbl.hash
+  end
+
+  include T
+  include Comparable.Make(T)
+end
+
+module TupleHashTbl = Hashtbl.Make (TupleKey)
