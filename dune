@@ -105,3 +105,9 @@
  (modules utils day18)
  (preprocess (pps ppx_jane))
  (libraries core re core_kernel.pairing_heap))
+
+(executable
+ (name day19)
+ (modes byte exe)
+ (modules utils day19)
+ (libraries core re))
