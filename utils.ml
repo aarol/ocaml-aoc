@@ -51,6 +51,9 @@ let find_in_grid grid char =
       | None -> ());
   (!x, !y)
 
+let grid_from_input input =
+  List.to_array input |> Array.map ~f:(fun line -> String.to_array line)
+
 let print_grid grid =
   Array.iter grid ~f:(fun row ->
       Array.iter row ~f:(fun v -> printf "%c" v);
@@ -65,6 +68,7 @@ let wait_for_input () =
 module TupleKey = struct
   module T = struct
     type t = int * int
+
     let compare x y = Tuple2.compare ~cmp1:Int.compare ~cmp2:Int.compare x y
     let sexp_of_t = Tuple2.sexp_of_t Int.sexp_of_t Int.sexp_of_t
     let t_of_sexp = Tuple2.t_of_sexp Int.t_of_sexp Int.t_of_sexp
@@ -72,7 +76,7 @@ module TupleKey = struct
   end
 
   include T
-  include Comparable.Make(T)
+  include Comparable.Make (T)
 end
 
 module TupleHashTbl = Hashtbl.Make (TupleKey)
