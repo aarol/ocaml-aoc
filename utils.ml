@@ -80,3 +80,13 @@ module TupleKey = struct
 end
 
 module TupleHashTbl = Hashtbl.Make (TupleKey)
+module TupleHashSet = Hash_set.Make (TupleKey)
+
+(* module TupleTupleKey = struct
+  type t = int * (int * int) [@@deriving compare, sexp, hash]
+end
+
+module TupleTupleHashTbl = Hashtbl.Make (module struct
+  include TupleTupleKey
+  include   Comparable.Make_plain(TupleTupleKey)
+end) *)

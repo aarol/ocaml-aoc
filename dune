@@ -111,3 +111,8 @@
  (modes byte exe)
  (modules utils day19)
  (libraries core re))
+(executable
+ (name day20)
+ (modes byte exe)
+ (modules utils day20)
+ (libraries core re core_kernel.pairing_heap))
