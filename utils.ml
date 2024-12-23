@@ -83,10 +83,28 @@ module TupleHashTbl = Hashtbl.Make (TupleKey)
 module TupleHashSet = Hash_set.Make (TupleKey)
 
 (* module TupleTupleKey = struct
-  type t = int * (int * int) [@@deriving compare, sexp, hash]
+     type t = int * (int * int) [@@deriving compare, sexp, hash]
+   end
+
+   module TupleTupleHashTbl = Hashtbl.Make (module struct
+     include TupleTupleKey
+     include   Comparable.Make_plain(TupleTupleKey)
+   end) *)
+
+module TripleKey = struct
+  type t = string * string * string
+
+  let hash (t : t) = Hashtbl.hash t
+
+  let equal (a1, b1, c1) (a2, b2, c2) =
+    String.equal a1 a2 && String.equal b1 b2 && String.equal c1 c2
+
+  let t_of_sexp = Tuple3.t_of_sexp string_of_sexp string_of_sexp string_of_sexp
+  let sexp_of_t = Tuple3.sexp_of_t sexp_of_string sexp_of_string sexp_of_string
+
+  let compare =
+    Tuple3.compare ~cmp1:String.compare ~cmp2:String.compare
+      ~cmp3:String.compare
 end
 
-module TupleTupleHashTbl = Hashtbl.Make (module struct
-  include TupleTupleKey
-  include   Comparable.Make_plain(TupleTupleKey)
-end) *)
+module TripleHashSet = Hash_set.Make (TripleKey)
